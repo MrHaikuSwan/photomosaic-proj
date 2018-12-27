@@ -7,7 +7,7 @@ W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
 sqsize = 50
 
-img = Image.open('earth.jpg')
+img = Image.open('earth.png')
 newHeight = img.size[H]-(img.size[H] % sqsize)
 newWidth = img.size[W]-(img.size[W] % sqsize)
 img = img.crop((0, 0, newWidth, newHeight))
@@ -21,15 +21,20 @@ for x in range(0, img.size[W], sqsize):
     for y in range(0, img.size[H], sqsize):
         box = (x,y,x+sqsize,y+sqsize)
         subparr = np.array(img.crop(box))
-        r, g, b = 0, 0, 0
-        for i in range(len(subparr)):
-            for j in range(len(subparr[i])):
-                r += subparr[i,j,RED]
-                g += subparr[i,j,GREEN]
-                b += subparr[i,j,BLUE]
-        r /= sqsize*sqsize
-        g /= sqsize*sqsize
-        b /= sqsize*sqsize
+        
+#        r, g, b = 0, 0, 0
+#        for i in range(len(subparr)):
+#            for j in range(len(subparr[i])):
+#                r += subparr[i,j,RED]
+#                g += subparr[i,j,GREEN]
+#                b += subparr[i,j,BLUE]
+#        r /= sqsize*sqsize
+#        g /= sqsize*sqsize
+#        b /= sqsize*sqsize
+        
+        avgpix = np.array(subparr.resize((1,1), resample = Image.BOX))
+        r, g, b = subparr[0,0,RED], subparr[0,0,GREEN], subparr[0,0,BLUE]
+
         avgpixels[y/sqsize,x/sqsize,RED] = r
         avgpixels[y/sqsize,x/sqsize,GREEN] = g
         avgpixels[y/sqsize,x/sqsize,BLUE] = b
@@ -61,7 +66,7 @@ for x in range(len(imgarr)):
 
 img.show()
 outimg.show()
-
+outimg.save('earth-photomosaic.png')
         
             
     
