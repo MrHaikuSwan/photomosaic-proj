@@ -3,6 +3,7 @@ import numpy as np
 import json
 import os
 
+
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
 sqsize = 50
@@ -20,7 +21,7 @@ avgpixels = np.zeros((img.size[H]/sqsize, img.size[W]/sqsize, 3), dtype='uint8')
 for x in range(0, img.size[W], sqsize):
     for y in range(0, img.size[H], sqsize):
         box = (x,y,x+sqsize,y+sqsize)
-        subparr = np.array(img.crop(box))
+        subrect = img.crop(box)
         
 #        r, g, b = 0, 0, 0
 #        for i in range(len(subparr)):
@@ -32,8 +33,8 @@ for x in range(0, img.size[W], sqsize):
 #        g /= sqsize*sqsize
 #        b /= sqsize*sqsize
         
-        avgpix = np.array(subparr.resize((1,1), resample = Image.BOX))
-        r, g, b = subparr[0,0,RED], subparr[0,0,GREEN], subparr[0,0,BLUE]
+        avgpix = np.array(subrect.resize((1,1), resample = Image.BOX))
+        r, g, b = avgpix[0,0,RED], avgpix[0,0,GREEN], avgpix[0,0,BLUE]
 
         avgpixels[y/sqsize,x/sqsize,RED] = r
         avgpixels[y/sqsize,x/sqsize,GREEN] = g
