@@ -6,9 +6,9 @@ import os
 
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
-sqsize = 50
+sqsize = 5
 
-img = Image.open('earth.png')
+img = Image.open('./TestImages/ObamaFace.png')
 newHeight = img.size[H]-(img.size[H] % sqsize)
 newWidth = img.size[W]-(img.size[W] % sqsize)
 img = img.crop((0, 0, newWidth, newHeight))
