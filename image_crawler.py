@@ -73,13 +73,13 @@ obj = {}
 #    g /= img.size[W]*img.size[H]
 #    b /= img.size[W]*img.size[H]
 #    obj[fp] = (r, g, b)
-    
+
 for fp in os.listdir('./ImageSet'):
     img = Image.open('./ImageSet/' + fp)
     avgpix = np.array(img.resize((1,1), resample = Image.BOX))
-    r, g, b = avgpix[0,0,RED], avgpix[0,0,GREEN], avgpix[0,0,BLUE]
+    r, g, b = int(avgpix[0,0,RED]), int(avgpix[0,0,GREEN]), int(avgpix[0,0,BLUE])
     obj[fp] = (r, g, b)
-    
+  
 with open('rgbindex2.json', 'w') as f:
     json.dump(obj, f)
 
