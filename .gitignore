@@ -1,0 +1,7 @@
+#datasets for mosaic pictures
+ImageSet/
+OldImageSet/
+
+#pictures, JSON rgbindex
+*.png
+*.json
