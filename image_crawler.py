@@ -77,9 +77,10 @@ class ImageCrawler(object):
             r, g, b = int(avgpix[0,0,RED]), int(avgpix[0,0,GREEN]), int(avgpix[0,0,BLUE])
             obj[fp] = (r, g, b)
           
-        with open('rgbindex.json', 'rw') as f:
+        with open('rgbindex.json', 'r') as f:
             jsonobj = json.load(f)
             jsonobj.update(obj)
+        with open('rgbindex.json', 'w') as f:
             json.dump(jsonobj, f)
 
     def update_counter(self):
