@@ -17,8 +17,8 @@ def zero_pad(n, digits):
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
-c = 0
 maxpics = 1600
+c = 0
 
 start_url = "/search/%s/" % ("flowers")
 q = Queue()
@@ -59,20 +59,6 @@ while c < maxpics:
     done_urls.append(url)
 
 obj = {}
-
-#for fp in os.listdir('./ImageSet'):
-#    img = Image.open('./ImageSet/' + fp)
-#    pixels = np.array(img)
-#    r,g,b = 0,0,0
-#    for x in range(len(pixels)):
-#        for y in range(len(pixels[x])):
-#            r += pixels[x,y,RED]
-#            g += pixels[x,y,GREEN]
-#            b += pixels[x,y,BLUE]
-#    r /= img.size[W]*img.size[H]
-#    g /= img.size[W]*img.size[H]
-#    b /= img.size[W]*img.size[H]
-#    obj[fp] = (r, g, b)
 
 for fp in os.listdir('./ImageSet'):
     img = Image.open('./ImageSet/' + fp)

@@ -6,9 +6,9 @@ import os
 
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
-sqsize = 5
+sqsize = 15
 
-img = Image.open('./TestImages/ObamaFace.png')
+img = Image.open('earth2.png')
 newHeight = img.size[H]-(img.size[H] % sqsize)
 newWidth = img.size[W]-(img.size[W] % sqsize)
 img = img.crop((0, 0, newWidth, newHeight))
@@ -22,16 +22,6 @@ for x in range(0, img.size[W], sqsize):
     for y in range(0, img.size[H], sqsize):
         box = (x,y,x+sqsize,y+sqsize)
         subrect = img.crop(box)
-        
-#        r, g, b = 0, 0, 0
-#        for i in range(len(subparr)):
-#            for j in range(len(subparr[i])):
-#                r += subparr[i,j,RED]
-#                g += subparr[i,j,GREEN]
-#                b += subparr[i,j,BLUE]
-#        r /= sqsize*sqsize
-#        g /= sqsize*sqsize
-#        b /= sqsize*sqsize
         
         avgpix = np.array(subrect.resize((1,1), resample = Image.BOX))
         r, g, b = avgpix[0,0,RED], avgpix[0,0,GREEN], avgpix[0,0,BLUE]
@@ -67,7 +57,7 @@ for x in range(len(imgarr)):
 
 img.show()
 outimg.show()
-outimg.save('earth-photomosaic.png')
+outimg.save('photomosaic.png')
         
             
     
