@@ -6,8 +6,10 @@ import os
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
 sqsize = 50
+imgfp = 'InputImages/earth.png' #later modify to allow multiple images
+imgname = imgfp.split('.')[0]
 
-img = Image.open('earth.png')
+img = Image.open(imgfp)
 newHeight = img.size[H]-(img.size[H] % sqsize)
 newWidth = img.size[W]-(img.size[W] % sqsize)
 img = img.crop((0, 0, newWidth, newHeight))
@@ -22,7 +24,7 @@ avgpixels = np.array(img.resize((img.size[W]/sqsize, img.size[H]/sqsize), resamp
 imgarr = np.zeros((avgpixels.shape[0], avgpixels.shape[1]), dtype='S14')
 diffarr = np.zeros((avgpixels.shape[0], avgpixels.shape[1]))
 
-with open('rgbindex.json', 'r') as f:
+with open('Indexes/rgbindex.json', 'r') as f:
     rgbindex = json.load(f)
 
 for x in range(len(avgpixels)):
@@ -30,7 +32,7 @@ for x in range(len(avgpixels)):
         mindiff = 195076 #max difference possible + 1
         mindiffpic = ''
         pixrgb = [avgpixels[x,y,RED], avgpixels[x,y,GREEN], avgpixels[x,y,BLUE]]
-        for fp in os.listdir('./ImageSet'):
+        for fp in os.listdir('ImageSet/'):
             picrgb = rgbindex[fp]
             diff = sum([(pixrgb[i]-picrgb[i])**2 for i in range(3)])
             if diff < mindiff:
@@ -41,7 +43,7 @@ for x in range(len(avgpixels)):
 
 for x in range(len(imgarr)):
     for y in range(len(imgarr[x])):
-        smimg = Image.open('./ImageSet/' + imgarr[x,y]).resize((sqsize, sqsize))
+        smimg = Image.open('ImageSet/' + imgarr[x,y]).resize((sqsize, sqsize))
         box = (y*sqsize, x*sqsize, y*sqsize + sqsize, x*sqsize + sqsize)
         outimg.paste(smimg, box)
         
@@ -52,5 +54,6 @@ diffimg = Image.fromarray(diffarr.astype('uint8'), mode = 'L').resize((img.size[
 img.show()
 outimg.show()
 diffimg.show()
-diffimg.save('color_diff_map.png')
-outimg.save('photomosaic.png')
+
+diffimg.save('DifferenceMaps/%s_diff.png' % (imgname))
+outimg.save('Photomosaics/%s_photomosaic.png' % (imgname))

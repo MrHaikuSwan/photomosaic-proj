@@ -77,13 +77,13 @@ class ImageCrawler(object):
             obj[fp] = (r, g, b)
         
         if mode == 'a':
-            with open('rgbindex.json', 'r') as f:
+            with open('Indexes/rgbindex.json', 'r') as f:
                 jsonobj = json.load(f)
                 jsonobj.update(obj)
-            with open('rgbindex.json', 'w') as f:
+            with open('Indexes/rgbindex.json', 'w') as f:
                 json.dump(jsonobj, f)
         elif mode == 'w':
-            with open('rgbindex.json', 'w') as f:
+            with open('Indexes/rgbindex.json', 'w') as f:
                 json.dump(obj, f)
         else:
             print "Invalid mode"

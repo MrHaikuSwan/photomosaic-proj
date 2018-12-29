@@ -30,7 +30,7 @@ class ColorMap(object):
             lists.append(orig)
         return lists
     
-    def load_rgbindex(self, fp = 'rgbindex.json'):
+    def load_rgbindex(self, fp = 'Indexes/rgbindex.json'):
         self.__init__()
         self.last_loaded_name = fp.split('.')[0]
         with open(fp, 'r') as f:
@@ -58,5 +58,5 @@ class ColorMap(object):
                 
                 
 mapper = ColorMap()
-mapper.load_image('earth.png')
+mapper.load_image('InputImages/earth.png')
 mapper.plot_colormap()
