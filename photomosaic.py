@@ -2,13 +2,15 @@ from PIL import Image
 import numpy as np
 import json
 import os
+import time
 
+BEG = time.time()
 
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
-sqsize = 15
+sqsize = 50
 
-img = Image.open('earth2.png')
+img = Image.open('earth.png')
 newHeight = img.size[H]-(img.size[H] % sqsize)
 newWidth = img.size[W]-(img.size[W] % sqsize)
 img = img.crop((0, 0, newWidth, newHeight))
@@ -16,20 +18,9 @@ outimg = img.copy()
 
 print 'Width: %spx\nHeight: %spx' % (img.size[W],img.size[H])
 
-avgpixels = np.zeros((img.size[H]/sqsize, img.size[W]/sqsize, 3), dtype='uint8')
-
-for x in range(0, img.size[W], sqsize):
-    for y in range(0, img.size[H], sqsize):
-        box = (x,y,x+sqsize,y+sqsize)
-        subrect = img.crop(box)
-        
-        avgpix = np.array(subrect.resize((1,1), resample = Image.BOX))
-        r, g, b = avgpix[0,0,RED], avgpix[0,0,GREEN], avgpix[0,0,BLUE]
-
-        avgpixels[y/sqsize,x/sqsize,RED] = r
-        avgpixels[y/sqsize,x/sqsize,GREEN] = g
-        avgpixels[y/sqsize,x/sqsize,BLUE] = b
-
+#implicit calculation of average pixels: Image.BOX averages in same manner, passed directly into array
+#no significant performance difference
+avgpixels = np.array(img.resize((img.size[W]/sqsize, img.size[H]/sqsize), resample = Image.BOX))
         
 imgarr = np.zeros((avgpixels.shape[0], avgpixels.shape[1]), dtype='S14')
 
@@ -59,5 +50,6 @@ img.show()
 outimg.show()
 outimg.save('photomosaic.png')
         
-            
+END = time.time()
+print END-BEG       
     
