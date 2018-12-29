@@ -8,8 +8,6 @@ import json
 from Queue import Queue
 #import threading (could feasibly implement with queues)
 
-
-
 class ImageCrawler(object):
     
     def __init__(self, imgdir = 'ImageSet/'):

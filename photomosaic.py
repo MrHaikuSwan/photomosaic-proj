@@ -2,9 +2,6 @@ from PIL import Image
 import numpy as np
 import json
 import os
-import time
-
-BEG = time.time()
 
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
@@ -23,6 +20,7 @@ print 'Width: %spx\nHeight: %spx' % (img.size[W],img.size[H])
 avgpixels = np.array(img.resize((img.size[W]/sqsize, img.size[H]/sqsize), resample = Image.BOX))
         
 imgarr = np.zeros((avgpixels.shape[0], avgpixels.shape[1]), dtype='S14')
+diffarr = np.zeros((avgpixels.shape[0], avgpixels.shape[1]))
 
 with open('rgbindex.json', 'r') as f:
     rgbindex = json.load(f)
@@ -38,18 +36,21 @@ for x in range(len(avgpixels)):
             if diff < mindiff:
                 mindiff = diff
                 mindiffpic = fp
-            imgarr[x,y] = mindiffpic
+        imgarr[x,y] = mindiffpic
+        diffarr[x,y] = mindiff
 
 for x in range(len(imgarr)):
     for y in range(len(imgarr[x])):
         smimg = Image.open('./ImageSet/' + imgarr[x,y]).resize((sqsize, sqsize))
         box = (y*sqsize, x*sqsize, y*sqsize + sqsize, x*sqsize + sqsize)
         outimg.paste(smimg, box)
+        
+diffarr = np.sqrt(diffarr)
+diffarr *= 255.0/np.max(diffarr)
+diffimg = Image.fromarray(diffarr.astype('uint8'), mode = 'L').resize((img.size[W], img.size[H]))
 
 img.show()
 outimg.show()
+diffimg.show()
+diffimg.save('color_diff_map.png')
 outimg.save('photomosaic.png')
-        
-END = time.time()
-print END-BEG       
-    
