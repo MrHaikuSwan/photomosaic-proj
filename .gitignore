@@ -2,6 +2,12 @@
 ImageSet/
 OldImageSet/
 
+#colormaps
+Colormaps/
+
 #pictures, JSON rgbindex
 *.png
+*.jpg
+*.jpeg
 *.json
+
