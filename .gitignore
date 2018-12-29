@@ -1,11 +1,18 @@
 #datasets for mosaic pictures
 ImageSet/
-OldImageSet/
+OldSets/
 
-#colormaps
+#input/output, products, indexes
+InputImages/
+Photomosaics/
+PublishableProducts/
+Indexes/
+
+#maps
 Colormaps/
+DifferenceMaps/
 
-#pictures, JSON rgbindex
+#pictures, JSONs
 *.png
 *.jpg
 *.jpeg

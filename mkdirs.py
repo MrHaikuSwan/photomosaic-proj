@@ -6,7 +6,6 @@ directories = [
         'ColorMaps',
         'DifferenceMaps',
         'ImageSet',
-        'Indexes',
         'InputImages',
         'Photomosaics'
         ]
