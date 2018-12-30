@@ -1,12 +1,21 @@
-import json
 from colorsys import rgb_to_hls
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 from math import sqrt
+import json
 
+#TODO: rename file
+#TODO: look at turning this into a module instead of a class
 
-class ColorMap(object):
+#TODO: [POTENTIALLY] Look up where the divisions between colors are to a human,
+#                    divide up the colormap into boxes for each of these divisions,
+#                    then use densities of each box to determine what colors you
+#                    need the most of, then possibly use aggregated search terms
+#                    that correspond to said boxes to scrape the best data
+#                    THIS SHOULD NOT BE PURSUED UNTIL PIC-MATCHING ALGORITHM IS BETTER
+
+class ImageAnalyzer(object):
     
     def __init__(self):
         self.coordlist = []
@@ -30,7 +39,7 @@ class ColorMap(object):
             lists.append(orig)
         return lists
     
-    def load_rgbindex(self, fp = 'Indexes/rgbindex.json'):
+    def load_rgbindex(self, fp = 'rgbindex.json'):
         self.__init__()
         self.last_loaded_name = fp.split('.')[0]
         with open(fp, 'r') as f:
@@ -45,6 +54,7 @@ class ColorMap(object):
         self.__init__()
         self.last_loaded_name = fp.split('.')[0]
         img = Image.open(fp)
+        img = img.convert('RGB')
         if sq_size is None or sq_size <= 1:
             sq_size = int(sqrt(img.size[0]*img.size[1]) / 45) # calculate sq_size for higher end of ~2000 points of data
         img = img.resize((img.size[0]/sq_size,img.size[1]/sq_size), Image.BOX)
@@ -57,6 +67,7 @@ class ColorMap(object):
                 self.coordlist.append(pttup)
                 
                 
-mapper = ColorMap()
+                
+mapper = ImageAnalyzer()
 mapper.load_image('InputImages/earth.png')
 mapper.plot_colormap()

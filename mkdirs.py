@@ -5,7 +5,7 @@ import os
 directories = [
         'ColorMaps',
         'DifferenceMaps',
-        'ImageSet',
+        'ImageSets',
         'InputImages',
         'Photomosaics'
         ]
