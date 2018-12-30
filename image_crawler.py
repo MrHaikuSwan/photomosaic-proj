@@ -99,8 +99,8 @@ class ImageCrawler(object):
         for fp in imgs_to_index:
             img = Image.open(indexdir + '/' + fp)
             img = img.convert('RGB')
-            avgpix = np.array(img.resize((1,1), resample = Image.BOX))
-            r, g, b = int(avgpix[0,0,RED]), int(avgpix[0,0,GREEN]), int(avgpix[0,0,BLUE])
+            avgpix = np.array(img.resize((1,1), resample = Image.BOX)).flatten()
+            r, g, b = int(avgpix[RED]), int(avgpix[GREEN]), int(avgpix[BLUE])
             obj[fp] = (r, g, b)
         
         path = 'ImageSets/%s_set/Indexes/rgb_index.json' % (self.img_name)
