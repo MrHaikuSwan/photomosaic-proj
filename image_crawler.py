@@ -11,6 +11,7 @@ from Queue import Queue
 #TODO: scrape images for earth.png
 #TODO: record what query got what images TRY NEBULA OR OTHER ASTRONOMICAL PHENOMENA
 #TODO: colormap new rgbindex after scraping, associate with starting term
+#TODO: lots of duplicated images
 
 #TODO: potentially use Google Images API (if that exists?)
 #TODO: potentially just turn this into a module to be imported rather than an entire class

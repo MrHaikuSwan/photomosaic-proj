@@ -39,9 +39,9 @@ class ImageAnalyzer(object):
             lists.append(orig)
         return lists
     
-    def load_rgbindex(self, fp = 'rgbindex.json'):
+    def load_rgbindex(self, fp):
         self.__init__()
-        self.last_loaded_name = fp.split('.')[0]
+        self.last_loaded_name = fp.split('/')[1]
         with open(fp, 'r') as f:
             rgbindex = json.load(f)
         for key in rgbindex:
@@ -66,8 +66,3 @@ class ImageAnalyzer(object):
                 self.colorlist.append(rgbtup)
                 self.coordlist.append(pttup)
                 
-                
-                
-mapper = ImageAnalyzer()
-mapper.load_image('InputImages/earth.png')
-mapper.plot_colormap()

@@ -6,7 +6,7 @@ import os
 
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
-sqsize = 50
+sqsize = 50 #maybe add formula to auto-calculate square size??
 imgfp = 'InputImages/earth.png' #later modify to allow multiple images
 imgname = imgfp.split('.')[0].split('/')[1]
 rgbindexfp = 'ImageSets/%s_set/Indexes/rgb_index.json' % (imgname)
