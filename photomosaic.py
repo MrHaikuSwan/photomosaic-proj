@@ -6,15 +6,15 @@ import os
 
 W, H = 0, 1
 RED, GREEN, BLUE = 0, 1, 2
-sqsize = 50 #maybe add formula to auto calculate square size??
+sqsize = 50 #maybe add formula to auto calculate square size?? (probably optimize for about 1600 squares)
 imgfp = 'InputImages/earth.png' #later modify to allow multiple images
 imgname = imgfp.split('.')[0].split('/')[1]
 rgbindexfp = 'ImageSets/%s_set/Indexes/rgb_index.json' % (imgname)
 
 img = Image.open(imgfp)
 img = img.convert('RGB')
-newHeight = img.size[H]-(img.size[H] % sqsize)
 newWidth = img.size[W]-(img.size[W] % sqsize)
+newHeight = img.size[H]-(img.size[H] % sqsize)
 img = img.crop((0, 0, newWidth, newHeight))
 outimg = img.copy()
 
