@@ -11,7 +11,7 @@ from Queue import Queue
 #TODO: scrape images for earth.png
 #TODO: record what query got what images TRY NEBULA OR OTHER ASTRONOMICAL PHENOMENA
 #TODO: colormap new rgbindex after scraping, associate with starting term
-#TODO: lots of duplicated images
+#TODO: use perceptual image hashing to get 0
 
 #TODO: potentially use Google Images API (if that exists?)
 #TODO: potentially just turn this into a module to be imported rather than an entire class
@@ -22,7 +22,6 @@ class ImageCrawler(object):
         self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
         self.counter = 0
         self.last_crawl_counter = 0
-        self.last_imgdir = ''
         self.img_query_index = {}
         self.img_name = img_name
         
@@ -35,14 +34,20 @@ class ImageCrawler(object):
         
         if name is None:
             name = self.img_name
+        else:
+            self.img_name = name
         
         dirname = "ImageSets/%s_set" % (name)
-        self.last_imgdir = dirname
         try:
             os.mkdir(dirname)
         except WindowsError:
             pass #is this bad?
-            
+        try:
+            os.mkdir(dirname + '/Indexes')
+        except WindowsError:
+            pass #is this bad?
+        
+        start_query = start_query.replace(' ', '%20')
         start_url = "/search/%s/" % (start_query)
         self.q.put(start_url)
         
@@ -72,7 +77,7 @@ class ImageCrawler(object):
                     #end of square crop
                     fp = "%s/image_%04d.png" % (dirname, self.counter)
                     img.save(fp)
-                    img_names.append(fp)
+                    img_names.append('image_%04d.png' % (self.counter))
                     self.counter += 1
                 except IOError:
                     print "IOError encountered on image %04d" % (self.counter)
@@ -88,7 +93,7 @@ class ImageCrawler(object):
             query = url.split('/')[2]
             self.img_query_index[query] = img_names
     
-    def rgb_index(self, mode = 'a'):
+    def rgb_index(self, mode):
         RED, GREEN, BLUE = 0, 1, 2
         obj = {}
         
@@ -116,7 +121,7 @@ class ImageCrawler(object):
         else:
             print "Invalid mode"
         
-    def query_index(self, mode = 'w'):
+    def query_index(self, mode):
         path = 'ImageSets/%s_set/Indexes/query_index.json' % (self.img_name)
         if mode == 'a':
             with open(path, 'r') as f:
@@ -132,7 +137,8 @@ class ImageCrawler(object):
             
 
     def update_counter(self):
-        images = [i for i in os.listdir(self.last_imgdir) if not i.endswith('.json')] #don't need now that .jsons are in Indexes/
+        imgdir = "ImageSets/%s_set" % (self.img_name)
+        images = [i for i in os.listdir(imgdir) if not i.endswith('.json')] #don't need now that .jsons are in Indexes/
         if not images:
             self.counter = 0
             return
@@ -140,3 +146,9 @@ class ImageCrawler(object):
         last_fp = images[-1]
         n = last_fp.split('.')[0].split('_')[1]
         self.counter = int(n) + 1
+
+crawler = ImageCrawler('earth')
+crawler.crawlWebsite('nebula', 1500)
+#definitely need an image duplicate remover here!
+crawler.query_index(mode = 'w')
+crawler.rgb_index(mode = 'w')
